@@ -1,5 +1,7 @@
 ---
 title: "IODS-Final"
+author: "Maria Karolina Wickholm"
+email: "maria.wickholm@helsinki.fi"
 output:
   html_document:
     theme: cosmo
@@ -11,13 +13,18 @@ output:
     code_folding: hide
 ---
 
-* GitHub repository: https://github.com/kkarolinaw/IODS-final
-Final assignment web: https://kkarolinaw.github.io/IODS-final/ *
+*
+Author: Maria Karolina Wickholm
+*
+GitHub repository: https://github.com/kkarolinaw/IODS-final
+*
+Final assignment web: https://kkarolinaw.github.io/IODS-final/indexF.html
+*
+E-mail: maria.wickholm@helsinki.fi *
 ***
   
 ```{r child = "chapterF1.Rmd"}
 ```
-  
 ***
 
 ```{r setup, include=FALSE}
