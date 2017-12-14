@@ -4,8 +4,7 @@
 
 
 About this project
-*My project aims to get to know and understand how open data science works.
-You can follow my progress on GitHub!
+*In the final assignment, I'll be trying to look deeper in the human data introduced on IODS course.
 
 GitHub repository: https://github.com/kkarolinaw/IODS-final
 Final assignment web: https://kkarolinaw.github.io/IODS-final/ *

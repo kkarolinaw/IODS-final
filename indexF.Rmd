@@ -11,6 +11,8 @@ output:
     code_folding: hide
 ---
 
+* GitHub repository: https://github.com/kkarolinaw/IODS-final
+Final assignment web: https://kkarolinaw.github.io/IODS-final/ *
 ***
   
 ```{r child = "chapterF1.Rmd"}
@@ -22,6 +24,7 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 "https://kkarolinaw.github.io/IODS-final/"
+
 
 IODS final assignment uploading . . . .
 
