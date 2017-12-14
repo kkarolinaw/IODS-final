@@ -1,13 +1,27 @@
 ---
-title: "index.Rmd"
-author: "Maria Karolina Wickholm"
-date: "13 joulukuuta 2017"
-output: html_document
+title: "IODS-Final"
+output:
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_depth: 2
+    fig_caption: true
+    fig_width: 6
+    fig_height: 4
+    code_folding: hide
 ---
+
+***
+  
+```{r child = "chapterF1.Rmd"}
+```
+  
+***
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
+"https://kkarolinaw.github.io/IODS-final/"
 
 IODS final assignment uploading . . . .
+
