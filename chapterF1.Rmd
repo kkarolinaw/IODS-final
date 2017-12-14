@@ -1,0 +1,11 @@
+
+
+# "IODS-Final"
+
+
+About this project
+*My project aims to get to know and understand how open data science works.
+You can follow my progress on GitHub!
+
+GitHub repository: https://github.com/kkarolinaw/IODS-final
+Final assignment web: https://kkarolinaw.github.io/IODS-final/ *
