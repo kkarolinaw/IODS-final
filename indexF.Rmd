@@ -20,7 +20,8 @@ GitHub repository: https://github.com/kkarolinaw/IODS-final
 *
 Final assignment web: https://kkarolinaw.github.io/IODS-final/indexF.html
 *
-E-mail: maria.wickholm@helsinki.fi *
+E-mail: maria.wickholm@helsinki.fi 
+*
 ***
   
 ```{r child = "chapterF1.Rmd"}
@@ -30,8 +31,6 @@ E-mail: maria.wickholm@helsinki.fi *
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-"https://kkarolinaw.github.io/IODS-final/"
-
 
 IODS final assignment uploading . . . .
 
