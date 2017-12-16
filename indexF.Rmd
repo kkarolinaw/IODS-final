@@ -32,5 +32,168 @@ E-mail: maria.wickholm@helsinki.fi
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-IODS final assignment uploading . . . .
+#Data loading and introduction
+
+load the data "human"
+```{r}
+human<- read.table("http://s3.amazonaws.com/assets.datacamp.com/production/course_2218/datasets/human1.txt", sep=",", header = T)
+dim(human)
+summary(human)
+```
+The Human data has 195 observations and 19 variables
+Description of the data set
+Origin of the data: http://hdr.undp.org/en/content/human-development-index-hdi
+
+The data used in this analysis consists of various development indicators in
+several countries and is provided by United Nations Development programme.
+The data consists of integer, character and numerical variables, where character=country, 
+int=HDI_rank, GNI_HDI_rank. GII_rank and MatMort. Rest of the data frame are numerical.
+
+Below are the column names and their full meanings
+
+"Country" = Country name,
+"HDI.Rank" = Human development index,
+"GNI" = Gross National Income per capita,
+"Life.Exp" = Life expectancy at birth,
+"Edu.Exp" = Expected years of schooling, 
+"Mat.Mor" = Maternal mortality ratio,
+"Ado.Birth" = Adolescent birth rate,
+"GII" = Gender Inequality Index,
+"Ado.Birth" = Adolescent birth rate,
+"Parli.F" = Shared of seats in parliament held by women,
+"Edu2.F" = Population with at least some secondary education, women,
+"Edu2.M" = Population with at least some secondary education, men,
+"Labo.F"= Labour force participation rate, women,
+"Labo.M" = Labour force participation rate, men,
+"Edu2.FM"= Population with at least some secondary education combined,
+"Labo.FM" = Labour force participation rate combined
+
+#Data wrangling and hypothesis
+
+The following analyse is inspired by Wilkinson and Pickett (2010) and their notification on how raising the living standards by continuous economic growth, is still relevant in Less developed countries. They however point out that the same effect differs in developed countries, at some point the correlation between economic growth and raining living standards looses its importance. To test this hypothesis, I'm going to keep only some variables from the human data. Variables of interest are Life expectancy at birth, Gross National Income per capita, Expected years of schooling and Human developmen index ranking. Shortly, I'm taking a look how GNI and Edu.Exp will effect on Life expecancy.
+
+First, lets access some libraries
+```{r}
+library(dplyr)
+library(tidyverse)
+library(corrplot)
+library(GGally)
+library(ggplot2)
+```
+```{r}
+human$GNI <- str_replace(human$GNI, pattern=",", replace ="") %>% as.numeric
+```
+
+```{r}
+str(human$GNI)
+```
+
+```{r}
+keep <- c("Country", "Life.Exp", "Edu.Exp", "GNI", "HDI.Rank")
+```
+```{r}
+library("dplyr")
+human <- select(human, one_of(keep))
+data.frame(human[-1], comp = complete.cases(human))
+human_ <- filter(human, complete.cases(human))
+```
+Now the data has only the variables needed for the analyse.
+
+Next, the observations which relate to regions instead of countries are removed.
+```{r}
+last <- nrow(human_) - 7
+human_ <- human_[1:last,]
+```
+```{r}
+rownames(human_) <- human_$Country
+human_ <- human_
+```
+```{r}
+colnames(human_)
+```
+Just in case if I get a flow on and maybe want later on look at the data with high and low  HDI rankings: divide data set human to countries with high HDI.Rank and low HDI.Rank. I will also take a look at the variable characters and plot two scatter plots of the variables at interest. 
+```{r}
+human_$HDI.Rank <- str_replace(human_$HDI.Rank, pattern=",", replace ="") %>% as.numeric
+str(human_$HDI.Rank)
+```
+```{r}
+LDC <- filter(human_, HDI.Rank > 95)
+DC <- filter(human_, HDI.Rank < 95)
+Life.Exp <- human_$Life.Exp
+Edu.Exp <- human_$Edu.Exp
+GNI <- human_$GNI
+HDI.Rank <- human_$HDI.Rank
+human_$Life.Exp
+human_$Edu.Exp
+human_$GNI
+human_$HDI.Rank
+```
+#Linear regression & analyse
+
+Linear regression is a linear approach on modeling relationships between variables. It consists of a dependant variable y and an explanatory variable x. In this section I'm contributing the variables GNI and Edu.Exp to Life expectancy with linear regression.
+
+```{r}
+plot(Life.Exp, Edu.Exp, main = title <- "Scatter plot with Life expectancy versus Education expectancy")
+plot(Life.Exp, GNI, main = title <- "Scatter plot with Life expectancy versus Gross National Income per capita")
+```
+```{r}
+human_$HDIHIGHLOW <- ifelse(human_$HDI.Rank > 90, 
+c("high on list"), c("low on list"))
+HDIHIGHLOW <- human_$HDIHIGHLOW
+```
+Here are some simple scatter plots of what I'm about to fit a linear regression line in. I'm using the wrangled data, called human_, where only variables of Human Development Index, Life expectancy at birth, Gross National Income per capita and Education expectancy are stored.
+
+Life.Exp.cut <- cut(Life.Exp, breaks = c(53, 67, 76, 85))
+str(Life.Exp.cut)
+head(Life.Exp.cut)
+fiti <- lm(`Life Exp` ~ Edu.Exp * GNI, data = as.data.frame(DC))
+summ(fiti)
+
+
+```{r}
+lm(formula = Life.Exp ~ Edu.Exp)
+```
+
+```{r}
+library(ggplot2)
+```
+```{r}
+p1 <- ggplot(human_, aes(x = Life.Exp, y = Edu.Exp, col = HDI.Rank))
+```
+
+```{r}
+p2 <- p1 + geom_point()
+```
+```{r}
+p2
+```
+```{r}
+p3 <- p2 + geom_smooth(method = "lm")
+```
+```{r}
+p4 <- p3 + ggtitle("Life expectancy versus education expectancy")
+p4
+```
+Here we can see a plot drawn on life expextancy versus education expectancy, where the coloring resembles HDI ranking: the darker a dot, the higher it falls on HDI Ranking. From this plot can be seen that there seems to be a nice correlation between expected years of education and life expectancy. A observation worth to notice is, that the correlation seems to get stronger in the countries with high HDI ranking, compared to the to counrties with low HDI ranking, where the countries fall a litte more scattered and further from the regression line.
+```{r}
+lm(formula = Life.Exp ~ GNI)
+```
+```{r}
+LifeGNI1 <- ggplot(human_, aes(x = Life.Exp, y = GNI, col = HDI.Rank))
+```
+```{r}
+LifeGNI2 <- LifeGNI1 + geom_point()
+```
+```{r}
+LifeGNI3 <- LifeGNI2 + geom_smooth(method = "lm")
+```
+```{r}
+LifeGNI4 <- LifeGNI3 + ggtitle("Life expectancy versus Gross National Income per capita")
+LifeGNI4
+```
+This is a similar kind of linear regression drawn to visualize the effect of GNI to Life expectancy. Here can be seen that in the lower HDI rankings and GNI seems to fall pretty nicely on the regression line, but in the upper parts of HDI ranking list with high GNI, at somepoint the GNIs correlation to life expectancy weakens. 
+
+#Conclusion
+
+The linear regression analysis done with the human data seems to support Wilkinsons and Pickets argument about economic growths importance to raising living standards: to some point the correlation is strong, but when reached a certain level, the effect of GNI looses its importance. The other variable of expected years of education there for seems to correlate with life expectancy even in countries with high HDI ranking. This makes me think about the controversy in western countries and their politics: what seems to be important is economic growth.
 
